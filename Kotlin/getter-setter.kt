@@ -23,10 +23,17 @@ class Person(age: Int = 25, name: String) {
      *  Duplicate method name "getAge" with signature "()I"
      *  in class file Person
      **/
-   
-  var name: String = name
-      get() = field
-      set(value) {field = value}
+
+     
+  /** Here no get/set property and 'accompanying' methods
+   *  are declared.
+   *  Explicit get/set methods are defined
+   *  'name' member is private and accessible through
+   *  explicit get/set methods
+  private var name: String = name
+  fun getName(): String { return name }
+  fun setName(_name: String) { name = _name }
+     
      
    
          
