@@ -12,19 +12,30 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCaptureException
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Done
+import androidx.compose.material.icons.sharp.Done
+import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import coil.compose.rememberImagePainter
@@ -87,6 +98,26 @@ class MainActivity : ComponentActivity() {
                     onError = { Log.e("kilo", "View error:", it) }
                 )
             }
+
+            if (shouldShowPhoto.value) {
+                Image(
+                    painter = rememberImagePainter(photoUri),
+                    contentDescription = null,
+                    modifier = Modifier.fillMaxSize()
+                )
+
+
+                IconButton(
+                        onClick = {
+                            shouldShowCamera.value = true
+                            shouldShowPhoto.value = false
+
+                        },
+                        modifier = Modifier.background(Color.DarkGray, CircleShape)
+                    ) {
+                        Icon(imageVector = Icons.Outlined.Done, contentDescription = null)
+                    }
+                }
         }
 
         requestCameraPermission()
@@ -98,6 +129,8 @@ class MainActivity : ComponentActivity() {
     private fun handleImageCapture(uri: Uri) {
         Log.i("kilo", "Image captured: $uri")
         shouldShowCamera.value = false
+        photoUri = uri
+        shouldShowPhoto.value = true
     }
 
     private fun getOutputDirectory(): File {
