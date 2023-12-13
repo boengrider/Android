@@ -1,5 +1,7 @@
 package com.example.textrecognition
 
+import android.content.res.Configuration
+import android.content.res.Resources
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -33,15 +35,26 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
+import java.io.IOException
 
 
 class MainActivity : ComponentActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) // Call the superclass onCreate method
 
+        val myres: Resources = resources
+        Log.i("MYTAG",packageResourcePath)
 
         setContent {
+            val image: InputImage
+
+
+            try {
+                image = InputImage.fromFilePath(this, Uri.parse("android.resource://com.example.textrecognition/drawable-nodpi/hashtag_senec.jpg"))
+            } catch (e: IOException) {
+                Log.e("MYTAG","${e.localizedMessage}")
+                e.printStackTrace()
+            }
             imageToExtractTextFrom(imageId = R.drawable.hashtag_senec, modifier = Modifier)
         }
     }
@@ -49,6 +62,7 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun imageToExtractTextFrom(imageId: Int?, modifier: Modifier = Modifier) {
+
     var clicks = remember { mutableStateOf(1) }
     var imageProcessingStatus = remember { mutableStateOf(false)}
     Log.i("TrackCompose", "imageToExtractTextFrom() called")
@@ -84,13 +98,15 @@ fun imageToExtractTextFromPreview() {
 }
 
 @Composable
-fun extractResult(processingResult: MutableState<Boolean>){
-    val uri = Uri.parse("android.resource://com.example.textrecognition/drawable/hashtag_senec.jpg")
+fun extractResult(processingResult: MutableState<Boolean>) {
+
+    val uri = Uri.parse("android.resource://com.example.textrecognition/drawable-nodpi/hashtag_senec.jpg")
 
     // When using Latin script library
     val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     // Input image to process
     val image: InputImage = InputImage.fromFilePath(LocalContext.current, uri)
+
 
     val result = recognizer.process(image)
 
