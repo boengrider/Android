@@ -56,6 +56,7 @@ class MainActivity : ComponentActivity() {
                 e.printStackTrace()
             }
             imageToExtractTextFrom(imageId = R.drawable.hashtag_senec, modifier = Modifier)
+            
         }
     }
 }
