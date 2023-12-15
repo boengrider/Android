@@ -1,12 +1,13 @@
 interface Animal {
     val animal: String // Abstract. Override in the class
-    val breed: String // Abstract. Override in the class
+    val breed: String  // Abstract. Override in the class
     
+    // May or may not be overriden in the class
     fun petAnimal() {
         println("Petting a ${breed} ${animal}")
     }
     
-    fun feedAnimal() // Abstract. Override in the class
+    fun feedAnimal()  // Abstract (No implementation) Must be overriden in the class
 }
 
 class Dog(override val breed: String) : Animal {
@@ -17,6 +18,7 @@ class Dog(override val breed: String) : Animal {
    }
    
    override fun petAnimal() = println("This petting method is overriden in Dog")
+   
 }
 
 class Cat(override val breed: String ) : Animal {
@@ -38,7 +40,8 @@ fun main() {
     d.petAnimal()
     println("Cat is an animal -> ${c is Animal}")
     println("Dog is an animal -> ${d is Animal}")
-
+    
+ 
     /**
     Feeding the cat
     Feeding the dog
