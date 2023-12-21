@@ -2,9 +2,12 @@ package com.example.textrecognition
 
 import android.content.res.Configuration
 import android.content.res.Resources
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
+import android.widget.ImageButton
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
@@ -12,6 +15,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,97 +28,86 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.google.android.gms.tasks.OnSuccessListener
+import com.google.android.gms.tasks.Task
 import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.Text
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 import java.io.IOException
+import java.lang.NullPointerException
 
 
 class MainActivity : ComponentActivity() {
+
+
+    private val imageUri: Uri = Uri.parse("android.resource://com.example.textrecognition/" + R.drawable.hashtag_senec)
+    private var inputImage: InputImage? = null
+
+
+
+
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState) // Call the superclass onCreate method
 
-        val myres: Resources = resources
-        Log.i("MYTAG",packageResourcePath)
+        try {
+            inputImage = InputImage.fromFilePath(this,imageUri)
+            Log.i("MYTAG","Image loaded successfully")
+
+        } catch (e:IOException) {
+            Log.e("MYTAG",e.toString())
+            this.finish()
+        }
+
+        if (inputImage == null) Log.e("MYTAG","Image is null before calling setContent()")
 
         setContent {
-            val image: InputImage
+            Log.i("MYTAG",imageUri.toString())
+            var jobDone = remember { mutableStateOf(false) }
+            var jobSuccessful = remember { mutableStateOf(false) }
 
+            val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
+            val task: Task<Text> = recognizer.process(inputImage!!)
+            task.addOnSuccessListener { jobDone.value = true; jobSuccessful.value = true; Log.i("MYTAG","Image processing successful") }
+            task.addOnFailureListener { e -> jobDone.value = true; jobSuccessful.value = false; Log.e("MYTAG","Image processing failed ${e.cause}")}
 
-            try {
-                image = InputImage.fromFilePath(this, Uri.parse("android.resource://com.example.textrecognition/drawable-nodpi/hashtag_senec.jpg"))
-            } catch (e: IOException) {
-                Log.e("MYTAG","${e.localizedMessage}")
-                e.printStackTrace()
-            }
-            imageToExtractTextFrom(imageId = R.drawable.hashtag_senec, modifier = Modifier)
             
+            Row(Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+
+                if (jobDone.value) {
+                    if (jobSuccessful.value) {
+                        Text(
+                            text = "Job is done and successful",
+                            color = Color.Green,
+                            fontSize = 40.sp
+                        )
+                    } else {
+                        Text(
+                            text = "Job is done but failed",
+                            color = Color.Red,
+                            fontSize = 40.sp
+                        )
+
+                    }
+                } else {
+                    Text("Job is not yet done", color = Color.Red, fontSize = 30.sp)
+                }
+            }
         }
     }
 }
 
-@Composable
-fun imageToExtractTextFrom(imageId: Int?, modifier: Modifier = Modifier) {
-
-    var clicks = remember { mutableStateOf(1) }
-    var imageProcessingStatus = remember { mutableStateOf(false)}
-    Log.i("TrackCompose", "imageToExtractTextFrom() called")
-    
-    extractResult(processingResult = imageProcessingStatus)
-    Box(modifier = modifier
-        .fillMaxSize()
-        .background(Color.Blue, RectangleShape)
-        .padding(bottom = 20.dp),
-        contentAlignment = Alignment.BottomCenter
-    ) {
-        Log.i("TrackCompose", "Box() called")
-        Column(verticalArrangement = Arrangement.Top)
-        {
-            Log.i("TrackCompose", "Column() called")
-            Image(painter = painterResource(id = R.drawable.hashtag_senec), contentDescription = null)
-        }
-        Button(onClick = { clicks.value++ },
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(horizontal = 20.dp))
-        {
-            Log.i("TrackCompose", "Button() called")
-            Text("Extract text from this image ${clicks.value} (${imageProcessingStatus.value})", fontWeight = FontWeight.ExtraBold)
-        }
-    }
-}
-
-@Composable
-@Preview
-fun imageToExtractTextFromPreview() {
-    imageToExtractTextFrom(imageId = null)
-}
-
-@Composable
-fun extractResult(processingResult: MutableState<Boolean>) {
-
-    val uri = Uri.parse("android.resource://com.example.textrecognition/drawable-nodpi/hashtag_senec.jpg")
-
-    // When using Latin script library
-    val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-    // Input image to process
-    val image: InputImage = InputImage.fromFilePath(LocalContext.current, uri)
-
-
-    val result = recognizer.process(image)
-
-    processingResult.value = result.isSuccessful
-
-
-}
 
 
 
