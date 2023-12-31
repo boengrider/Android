@@ -36,8 +36,7 @@ fun decideAction(action: String): (Int) -> Int {
       
 }
 
-//applyAction takes function type as it's second parameter
-fun applyAction(input: Int, action: (Int) -> Int): Int {
-    
-    return action(input)
-}
+//applyAction takes function type as it's second parameter. Simpliefied
+fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
+
+
