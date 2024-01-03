@@ -90,7 +90,9 @@ fun main() {
 }
 ```
 
-### Nullables   
+---
+### Nullables  
+---
 
 Define a function returning a function-type or null
 
@@ -112,9 +114,9 @@ fun decideActionFunctionTypeOrNull(action: String): ((Int) -> Int)? {
 fun main() {
 
     // There is no such action as '**', therefore decideActionFunctionTypeOrNull function will return null
-    val actionSquareOrNull: ((Int) -> Int)? = decideActionFunctionTypeOrNull("**")
+    val actionFunctionTypeOrNull: ((Int) -> Int)? = decideActionFunctionTypeOrNull("**")
     
-    if (actionSquareOrNull == null) println("No such action exists") //No such action exists
+    if (actionFunctionTypeOrNull == null) println("No such action exists") //No such action exists
     
 ```
 
