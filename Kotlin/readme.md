@@ -89,6 +89,30 @@ fun main() {
 
 }
 ```
-   
+
+### Nullables   
+
+Define a function returning a function-type or null
+
+```kotlin
+fun decideActionNullable(action: String): ((Int) -> Int)? {
+    
+  if(action == "++") return { input: Int -> input + 1 } // Increment
+  
+  if(action == "*=") return { input: Int -> input * input } // Square
+  
+  if(action == "--") return { input: Int -> input - 1 } // Decrement
+  
+  return null // No such action exists
+  
+}
+```
+
+#                             versus
+
+//Return a function-type OR null
+// ((Int) -> Int)?   Either return a function-type or a null
+//                     vs
+// (Int) -> Int?     Return a function-type which itself returns an Int or a null
     
 
