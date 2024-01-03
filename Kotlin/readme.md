@@ -2,7 +2,7 @@
 
 ---
 + ## Function types
-+ [a relative link](function_types.kt)
+[source file](function_types.kt)
 
 Following function takes a **String** parameter and returns a **function-type**      
 Returned **function-type** takes an **Int** parameter and returns an **Int**
@@ -16,7 +16,7 @@ fun decideAction(action: String): (Int) -> Int {
   
   return { input: Int -> input } // Do nothing
 }
-```
+```   
 
 Following function has two parameters   
 1st parameter is of type **Int**
@@ -25,12 +25,13 @@ The 2nd parameter is a **function-type** which itself has one **Int** parameter 
 fun applyAction(input: Int, action: (Int) -> Int): Int {   
     return action(input)
 }
-```
+```   
 Above function definition can be simplified a bit like this   
 ```kotlin
 fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
-```
+```   
 
+Use the function-types 'directly', refering to variables storing them
 ```kotlin
 fun main() {
     val number = 10
@@ -45,15 +46,30 @@ fun main() {
     println(actionSquare(number))    // 100
     println(actionDecrement(number)) // 9
 
-    // Alternatively pass the function-types as an argument to other function which takes a function-type as an argument
-    // Here applyAction accepts (Int) -> Int function-type as an argument
+}
+```   
+
+Use the function-types 'indirectly', passing a function-type argument to another function   
+Here the applyAction function takes a function-type as it's 2nd parameter
+```kotlin
+fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
+```
+```kotlin
+fun main() {
+    val number = 10
+
+    // Store the function-type in the variables
+    val actionIncrement = decideAction("++")
+    val actionSquare = decideAction("*=")
+    val actionDecrement = decideAction("--")
+
     println(applyAction(number,actionIncrement)) // 11
     println(applyAction(number,actionSquare))    // 100
     println(applyAction(number,actionDecrement)) // 9
 
-    // Explicitly call function-type's invoke method
-    println(actionSquare.invoke(number)) // 100
 
-    
 }
+```
+   
+    
 
