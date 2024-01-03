@@ -1,37 +1,42 @@
 fun main() {
     val number = 10
     
+    // Store the function-types
     val actionIncrement = decideAction("++")
     val actionSquare = decideAction("*=")
     val actionDecrement = decideAction("--")
     
-    // Increment the number
-    println(actionIncrement(number)) 
-    println(actionSquare.invoke(number))
-    println(actionDecrement(number)) // Use a function type 'directly'
+    // Use a function type 'directly'
+    println(actionIncrement(number)) // 11
+    println(actionSquare(number))    // 100
+    println(actionDecrement(number)) // 9
     
-    println(applyAction(number,actionIncrement))
-
-    println(applyAction(number,actionSquare))
-
-    println(applyAction(number,actionDecrement))
+    // Pass a function-type as an argument
+    println(applyAction(number,actionIncrement)) // 11
+    println(applyAction(number,actionSquare))    // 100
+    println(applyAction(number,actionDecrement)) // 9
     
-    println(actionSquare.invoke(number)) // 100
-    /** 
-     * 11
-     * 100
-     * 9
-     * 11
-    **/
+    // Call function-type's invoke method explicitly
+    println(actionIncrement.invoke(number)) // 11
+    println(actionSquare.invoke(number))    // 100
+    println(actionDecrement.invoke(number)) // 9
+    
+    // Nullables
+    
+    // There is no such action as '**', therefore decideActionNullable() will return null
+    val actionSquareNullable: ((Int) -> Int)? = decideActionFunctionTypeNullable("**")
+    
+    if (actionSquareNullable == null) println("No such action exists") //No such action exists
+    
+    
+    // Even though there is '*=' action (square), that function-type itself can return null
+    // e.g. if parameter passed to the function-type itself is zero
+    val actionSquareActionResultNullable: (Int) -> Int? = decideActionFunctionTypeResultNullable("*=")
+    val result: Int? = actionSquareActionResultNullable(0)
+    println((result == null)) // true
+  
+    
    
-    //There is no '**' action. null should be returned from the decideAction function instead of a function-type
-    val actionIncrementNullable: ((Int) -> Int)? = decideActionNullable("**") 
-    
-    // True
-    println(actionIncrementNullable == null) 
-    
-    // Type mismatch: inferred type is ((Int) -> Int)? but (Int) -> Int was expected
-    //println(applyAction(number,actionIncrementNullable)) 
 }
 
 
@@ -44,15 +49,13 @@ fun decideAction(action: String): (Int) -> Int {
   
   if(action == "--") return { input: Int -> input - 1 } // Decrement
   
-  return { input: Int -> input } // Do nothing
+  return { input: Int -> input } // Return the value unmodified
       
 }
 
 //Return a function-type OR null
 // ((Int) -> Int)?   Either return a function-type or a null
-//                     vs
-// (Int) -> Int?     Return a function-type which itself returns an Int or a null
-fun decideActionNullable(action: String): ((Int) -> Int)? {
+fun decideActionFunctionTypeNullable(action: String): ((Int) -> Int)? {
     
   if(action == "++") return { input: Int -> input + 1 } // Increment
   
@@ -63,6 +66,20 @@ fun decideActionNullable(action: String): ((Int) -> Int)? {
   return null // Do nothing
   
 }
+
+
+fun decideActionFunctionTypeResultNullable(action: String): (Int) -> Int? {
+    
+  if(action == "++") return { input: Int -> input + 1 } // Increment
+  
+  if(action == "*=") return { input: Int -> if(input != 0) { input * input } else { null } } // Square
+  
+  if(action == "--") return { input: Int -> input - 1 } // Decrement
+  
+  return { null } // No such action exists
+  
+}
+
 
 //applyAction takes function type as it's second parameter. Simpliefied
 fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
