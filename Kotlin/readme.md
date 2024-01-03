@@ -47,7 +47,26 @@ fun main() {
     println(actionDecrement(number)) // 9
 
 }
-```   
+```
+
+Call the function-type's invoke method explicitly
+```kotlin
+fun main() {
+    val number = 10
+
+    // Store the function-type in the variables
+    val actionIncrement = decideAction("++")
+    val actionSquare = decideAction("*=")
+    val actionDecrement = decideAction("--")
+
+    // Refer to the stored function-types 'directly'
+    println(actionIncrement.invoke(number)) // 11
+    println(actionSquare.invoke(number))    // 100
+    println(actionDecrement.invoke(number)) // 9
+
+}
+```
+
 
 Use the function-types 'indirectly', passing a function-type argument to another function   
 Here the applyAction function takes a function-type as it's 2nd parameter
