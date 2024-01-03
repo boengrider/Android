@@ -95,7 +95,7 @@ fun main() {
 Define a function returning a function-type or null
 
 ```kotlin
-fun decideActionNullable(action: String): ((Int) -> Int)? {
+fun decideActionFunctionTypeOrNull(action: String): ((Int) -> Int)? {
     
   if(action == "++") return { input: Int -> input + 1 } // Increment
   
@@ -108,9 +108,16 @@ fun decideActionNullable(action: String): ((Int) -> Int)? {
 }
 ```
 
+```kotlin
+fun main() {
 
+    // There is no such action as '**', therefore decideActionFunctionTypeOrNull function will return null
+    val actionSquareOrNull: ((Int) -> Int)? = decideActionFunctionTypeOrNull("**")
+    
+    if (actionSquareOrNull == null) println("No such action exists") //No such action exists
+    
+```
 
-$${\color{red}VERSUS}$$
 
 Define a function returning a function-type which itself returns a Int or null
 ```kotlin
