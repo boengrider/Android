@@ -51,20 +51,15 @@ fun main() {
 
 Call the function-type's invoke method explicitly
 ```kotlin
-fun main() {
-    val number = 10
-
     // Store the function-type in the variables
     val actionIncrement = decideAction("++")
     val actionSquare = decideAction("*=")
     val actionDecrement = decideAction("--")
 
     // Refer to the stored function-types 'directly'
-    println(actionIncrement.invoke(number)) // 11
-    println(actionSquare.invoke(number))    // 100
-    println(actionDecrement.invoke(number)) // 9
-
-}
+    println(actionIncrement.invoke(10)) // 11
+    println(actionSquare.invoke(10))    // 100
+    println(actionDecrement.invoke(10)) // 9
 ```
 
 
@@ -74,20 +69,15 @@ Here the applyAction function takes a function-type as it's 2nd parameter
 fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
 ```
 ```kotlin
-fun main() {
-    val number = 10
-
     // Store the function-type in the variables
     val actionIncrement = decideAction("++")
     val actionSquare = decideAction("*=")
     val actionDecrement = decideAction("--")
 
-    println(applyAction(number,actionIncrement)) // 11
-    println(applyAction(number,actionSquare))    // 100
-    println(applyAction(number,actionDecrement)) // 9
+    println(applyAction(10,actionIncrement)) // 11
+    println(applyAction(10,actionSquare))    // 100
+    println(applyAction(10,actionDecrement)) // 9
 
-
-}
 ```
 
 ---
@@ -111,29 +101,46 @@ fun decideActionFunctionTypeOrNull(action: String): ((Int) -> Int)? {
 ```
 
 ```kotlin
-fun main() {
-
     // There is no such action as '**', therefore decideActionFunctionTypeOrNull function will return null
     val actionFunctionTypeOrNull: ((Int) -> Int)? = decideActionFunctionTypeOrNull("**")
+
+    // This won't compile with the following error message
+    // Reference has a nullable type '((Int) -> Int)?', use explicit '?.invoke()' to make a function-like call instead
+    // println(actionFunctionTypeOrNull(10))
+
+     // Call invoke explicitly
+     println(actionFunctionTypeOrNull?.invoke(10)) // null
+     // Since actionFunctionTypeOrNull is nullable type, we
+     // probably get text representation of it. Similar to
+     println(actionFunctionTypeOrNull.toString())  // null
     
-    if (actionFunctionTypeOrNull == null) println("No such action exists") //No such action exists
     
 ```
+<br><br>
    
-   
-Define a function returning a function-type which itself returns a Int or null
+Define a function returning a function-type which itself returns an Int or null
 ```kotlin
-fun decideActionNullable(action: String): (Int) -> Int? {
+fun decideActionFunctionTypeResultOrNull(action: String): (Int) -> Int? {
     
   if(action == "++") return { input: Int -> input + 1 } // Increment
   
-  if(action == "*=") return { input: Int -> input * input } // Square
+  if(action == "*=") return { input: Int -> if(input != 0) { input * input } else { null } } // Square
   
   if(action == "--") return { input: Int -> input - 1 } // Decrement
   
-  return null // No such action exists
+  return { input: Int -> input } // No such action exists
   
 }
+```
+
+```kotlin
+    // Even though there is '*=' action (square), and
+    // function decideActionFunctionTypeResultOrNull will
+    // indeed return a function-type that function-type itself can return null
+    // e.g. if parameter passed to the function-type itself is zero
+    val actionFunctionTypeResultOrNull: (Int) -> Int? = decideActionFunctionTypeResultOrNull("*=")
+    val result: Int? = actionFunctionTypeResultOrNull(0)
+    println((result == null)) // true
 ```
     
 
