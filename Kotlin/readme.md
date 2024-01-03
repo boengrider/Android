@@ -29,3 +29,29 @@ Above function definition can be simplified a bit like this
 ```kotlin
 fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
 ```
+
+```kotlin
+fun main() {
+    val number = 10
+    
+    val actionIncrement = decideAction("++")
+    val actionSquare = decideAction("*=")
+    val actionDecrement = decideAction("--")
+    
+    println(actionIncrement(number)) // Use a function type 'directly'
+    println(actionSquare(number))    // Use a function type 'directly'
+    println(actionDecrement(number)) // Use a function type 'directly'
+    println(applyAction(number,actionIncrement)) // Pass a function type as an argument to applyAction
+    
+    /** 
+     * 11
+     * 100
+     * 9
+     * 11
+    **/
+   
+    //val copyActionIncrement = actionIncrement
+    //println(copyActionIncrement(20))
+    //println(copyActionIncrement.invoke(50))
+}
+
