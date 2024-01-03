@@ -84,6 +84,13 @@ fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
 ### Nullables  
 ---
 
+#### Three use cases
++ Use case ${\color{green}A}$	 ((Int) -> Int)?
++ Use case ${\color{green}B}$  (Int) -> Int?
++ Use case ${\color{green}C}$  ((Int) -> Int?)?
+<br><br> 
+
+#### Use case ${\color{green}A}$
 Define a function returning a function-type or null
 
 ```kotlin
@@ -117,7 +124,8 @@ fun decideActionFunctionTypeOrNull(action: String): ((Int) -> Int)? {
     
 ```
 <br><br>
-   
+
+#### Use case ${\color{green}B}$
 Define a function returning a function-type which itself returns an Int or null
 ```kotlin
 fun decideActionFunctionTypeResultOrNull(action: String): (Int) -> Int? {
@@ -127,7 +135,8 @@ fun decideActionFunctionTypeResultOrNull(action: String): (Int) -> Int? {
   if(action == "*=") return { input: Int -> if(input != 0) { input * input } else { null } } // Square
   
   if(action == "--") return { input: Int -> input - 1 } // Decrement
-  
+
+  // Here we can decide, either return a unmodified non-null value or null
   return { input: Int -> input } // No such action exists
   
 }
