@@ -49,7 +49,7 @@ import java.lang.NullPointerException
 class MainActivity : ComponentActivity() {
 
 
-    private val imageUri: Uri = Uri.parse("android.resource://com.example.textrecognition/" + R.drawable.hashtag_senec)
+    private val imageUri: Uri = Uri.parse("android.resource://com.example.textrecognition/" + R.drawable.sign)
     private var inputImage: InputImage? = null
 
 
