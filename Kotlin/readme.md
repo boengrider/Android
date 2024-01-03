@@ -119,8 +119,8 @@ fun main() {
     if (actionFunctionTypeOrNull == null) println("No such action exists") //No such action exists
     
 ```
-
-
+   
+   
 Define a function returning a function-type which itself returns a Int or null
 ```kotlin
 fun decideActionNullable(action: String): (Int) -> Int? {
