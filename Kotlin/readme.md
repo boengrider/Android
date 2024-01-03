@@ -2,6 +2,7 @@
 
 ---
 + ## Function types
++ [a relative link](function_types.kt)
 
 Following function takes a **String** parameter and returns a **function-type**      
 Returned **function-type** takes an **Int** parameter and returns an **Int**
@@ -33,25 +34,26 @@ fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
 ```kotlin
 fun main() {
     val number = 10
-    
+
+    // Store the function-type in the variables
     val actionIncrement = decideAction("++")
     val actionSquare = decideAction("*=")
     val actionDecrement = decideAction("--")
+
+    // Refer to the stored function-types 'directly'
+    println(actionIncrement(number)) // 11
+    println(actionSquare(number))    // 100
+    println(actionDecrement(number)) // 9
+
+    // Alternatively pass the function-types as an argument to other function which takes a function-type as an argument
+    // Here applyAction accepts (Int) -> Int function-type as an argument
+    println(applyAction(number,actionIncrement)) // 11
+    println(applyAction(number,actionSquare))    // 100
+    println(applyAction(number,actionDecrement)) // 9
+
+    // Explicitly call function-type's invoke method
+    println(actionSquare.invoke(number)) // 100
+
     
-    println(actionIncrement(number)) // Use a function type 'directly'
-    println(actionSquare(number))    // Use a function type 'directly'
-    println(actionDecrement(number)) // Use a function type 'directly'
-    println(applyAction(number,actionIncrement)) // Pass a function type as an argument to applyAction
-    
-    /** 
-     * 11
-     * 100
-     * 9
-     * 11
-    **/
-   
-    //val copyActionIncrement = actionIncrement
-    //println(copyActionIncrement(20))
-    //println(copyActionIncrement.invoke(50))
 }
 
