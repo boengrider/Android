@@ -90,7 +90,7 @@ fun applyAction(input: Int, action: (Int) -> Int): Int = action(input)
 + Use case ${\color{green}C}$  ((Int) -> Int?)?
 <br><br> 
 
-#### Use case ${\color{green}A}$
+#### Use case ${\color{green}A}$	 ((Int) -> Int)?
 Define a function returning a function-type or null
 
 ```kotlin
@@ -125,7 +125,7 @@ fun decideActionFunctionTypeOrNull(action: String): ((Int) -> Int)? {
 ```
 <br><br>
 
-#### Use case ${\color{green}B}$
+#### Use case ${\color{green}B}$  (Int) -> Int?
 Define a function returning a function-type which itself returns an Int or null
 ```kotlin
 fun decideActionFunctionTypeResultOrNull(action: String): (Int) -> Int? {
@@ -136,8 +136,10 @@ fun decideActionFunctionTypeResultOrNull(action: String): (Int) -> Int? {
   
   if(action == "--") return { input: Int -> input - 1 } // Decrement
 
-  // Here we can decide, either return a unmodified non-null value or null
+  // Here we can decide, either return a unmodified non-null value or
+  // a function-type returning a null value i.e return { null } 
   return { input: Int -> input } // No such action exists
+
   
 }
 ```
@@ -150,6 +152,22 @@ fun decideActionFunctionTypeResultOrNull(action: String): (Int) -> Int? {
     val actionFunctionTypeResultOrNull: (Int) -> Int? = decideActionFunctionTypeResultOrNull("*=")
     val result: Int? = actionFunctionTypeResultOrNull(0)
     println((result == null)) // true
+```
+<br><br>
+
+#### Use case ${\color{green}C}$  ((Int) -> Int?)?
+Define a function returning a function-type or null. Retruned function-type istelf either returns Int or null
+```kotlin
+fun decideActionFunctionTypeOrNullResultOrNull(action: String): ((Int) -> Int?)? {
+    
+  if(action == "++") return { input: Int -> input + 1 } // Increment
+  
+  if(action == "*=") return { input: Int -> if(input != 0) { input * input } else { null } } // Square
+  
+  if(action == "--") return { input: Int -> input - 1 } // Decrement
+  
+  return null // No such action exists
+}
 ```
     
 
