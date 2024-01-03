@@ -24,15 +24,15 @@ fun main() {
     // Nullables
     
     // There is no such action as '**', therefore decideActionNullable() will return null
-    val actionSquareNullable: ((Int) -> Int)? = decideActionFunctionTypeNullable("**")
+    val actionSquareOrNull: ((Int) -> Int)? = decideActionFunctionTypeOrNull("**")
     
-    if (actionSquareNullable == null) println("No such action exists") //No such action exists
+    if (actionSquareOrNull == null) println("No such action exists") //No such action exists
     
     
     // Even though there is '*=' action (square), that function-type itself can return null
     // e.g. if parameter passed to the function-type itself is zero
-    val actionSquareActionResultNullable: (Int) -> Int? = decideActionFunctionTypeResultNullable("*=")
-    val result: Int? = actionSquareActionResultNullable(0)
+    val actionSquareActionResultOrNull: ((Int) -> Int?)? = decideActionFunctionTypeResultOrNull("*=")
+    val result: Int? = actionSquareActionResultOrNull?.invoke(0)
     println((result == null)) // true
   
     
@@ -53,9 +53,14 @@ fun decideAction(action: String): (Int) -> Int {
       
 }
 
-//Return a function-type OR null
-// ((Int) -> Int)?   Either return a function-type or a null
-fun decideActionFunctionTypeNullable(action: String): ((Int) -> Int)? {
+/***********************************
+Return a function-type OR null
+((Int) -> Int)? means, either return 
+a function-type with this signature
+else return a null 
+************************************/
+
+fun decideActionFunctionTypeOrNull(action: String): ((Int) -> Int)? {
     
   if(action == "++") return { input: Int -> input + 1 } // Increment
   
@@ -63,12 +68,12 @@ fun decideActionFunctionTypeNullable(action: String): ((Int) -> Int)? {
   
   if(action == "--") return { input: Int -> input - 1 } // Decrement
   
-  return null // Do nothing
+  return null // No such action exists
   
 }
 
 
-fun decideActionFunctionTypeResultNullable(action: String): (Int) -> Int? {
+fun decideActionFunctionTypeResultOrNull(action: String): ((Int) -> Int?)? {
     
   if(action == "++") return { input: Int -> input + 1 } // Increment
   
@@ -76,7 +81,7 @@ fun decideActionFunctionTypeResultNullable(action: String): (Int) -> Int? {
   
   if(action == "--") return { input: Int -> input - 1 } // Decrement
   
-  return { null } // No such action exists
+  return null // No such action exists
   
 }
 
