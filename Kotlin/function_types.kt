@@ -90,7 +90,12 @@ fun decideActionFunctionTypeOrNull(action: String): ((Int) -> Int)? {
   
 }
 
-
+/***********************************
+ * Return a function-type 
+ * Which returns an Int, and if the
+ * parameter is zero, it returns a null
+ ***********************************/
+ 
 fun decideActionFunctionTypeResultOrNull(action: String): (Int) -> Int? {
     
   if(action == "++") return { input: Int -> input + 1 } // Increment
@@ -104,6 +109,11 @@ fun decideActionFunctionTypeResultOrNull(action: String): (Int) -> Int? {
  
 }
 
+/***********************************
+ * Return a function-type or a null 
+ * Function-type returns an Int, and if the
+ * parameter is zero, it returns a null
+ ***********************************/
 fun decideActionFunctionTypeOrNullResultOrNull(action: String): ((Int) -> Int?)? {
     
   if(action == "++") return { input: Int -> input + 1 } // Increment
