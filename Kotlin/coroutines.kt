@@ -26,7 +26,7 @@ suspend fun GrindAndBoil(waterToBoil: BoiledWater) {
         launch {
             //Grind the coffee grounds
             println("Grinding the coffee grounds...")
-            delay(2000L) //Simulate longer running job
+            delay(4000L) //Simulate longer running job
             waterToBoil.temperature = 70 // Simulate water cooling off because of grinding taking longer
         }
         
