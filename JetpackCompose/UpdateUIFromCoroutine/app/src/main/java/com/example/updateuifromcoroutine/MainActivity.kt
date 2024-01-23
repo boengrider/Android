@@ -1,26 +1,35 @@
 package com.example.updateuifromcoroutine
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.text.isDigitsOnly
 import com.example.updateuifromcoroutine.ui.theme.UpdateUIFromCoroutineTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -39,92 +48,76 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    var output = remember { mutableStateOf(0L) }
-                    var textLabel = remember { mutableStateOf("Async") }
-                    var totalDelay = remember { mutableStateOf(0L)}
 
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Row(horizontalArrangement = Arrangement.Center) {
+                    mainScreen()
 
-                            Button(onClick = { DoUselessWorkAsync(output, textLabel) }) {
-                                Text(textLabel.value)
-                            }
+                }
+            }
+        }
+    }
+}
 
-                            Button(onClick = { output.value = 0L; totalDelay.value = 0L }) {
-                                Text("Rest")
-                            }
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun mainScreen() {
+    Log.i("TRACKCOMPOSE","mainScreen() called")
+    var someNumber = remember { mutableStateOf(0) }
+    var factorialOfNumber = remember { mutableStateOf("5") }
+    var factorialResult = remember { mutableStateOf(0) }
 
-                            Button(onClick = { CoroutineScope(Dispatchers.Default).launch {
-                                val begin = System.nanoTime()
-                                val jobA = async {
-                                    delay(5000L)
-                                    totalDelay.value = 5000L
-                                }
-                                val jobB = async {
-                                    delay(2000L)
-                                }
-                                awaitAll(jobA,jobB)
-                                val end = System.nanoTime()
 
-                                totalDelay.value = end - begin
+    Column(horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
 
-                            }
+        Button(onClick = { ++someNumber.value }) {
+            Text("Increment number")
+        }
 
-                            }) {
-                                Text("Launch")
-                            }
-                        }
+        Text(someNumber.value.toString())
 
-                        Row(horizontalArrangement = Arrangement.Center) {
-                            Text(output.value.toString())
-                        }
-                        Row(horizontalArrangement = Arrangement.Center) {
-                            Text(totalDelay.value.toString())
-                        }
+        Button(onClick = {
+            GlobalScope.launch(context = Dispatchers.Main) {
+                println(Thread.currentThread().name)
+            }
+
+            GlobalScope.launch {
+                println(Thread.currentThread().name)
+            }
+        }) {
+            Text("Get thread context with delay")
+        }
+
+        OutlinedTextField(value = factorialOfNumber.value.toString(), onValueChange = { if(it.isDigitsOnly()) factorialOfNumber.value = it }, label = { Text("Label")}, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+
+        Row {
+            Button(onClick = {
+                if(factorialOfNumber.value.toInt() > 0) {
+                    var tmp: Int = 1
+                    (2..factorialOfNumber.value.toInt()).forEach {
+                        tmp *= it
                     }
+
+                    factorialResult.value = tmp
+                } else {
+
+                    factorialResult.value = 0
                 }
+            }) {
+                Text("Compute factorial")
             }
-        }
-    }
-}
 
-fun DoUselessWorkAsync(target: MutableState<Long>, label: MutableState<String>) {
-    label.value = "Executing async..."
-
-    val responseA = CoroutineScope(Dispatchers.Default).async {
-        var cycles = 0
-        var accumulator = 0L
-        for(i in 1..100) {
-            accumulator = 0L
-            for (j in 1..100000000) {
-                accumulator++
-            }
+            Text(factorialResult.value.toString())
         }
-        target.value += accumulator
-        label.value = "Async"
+
+
     }
 
 }
 
-
-
-suspend fun DoUselessWorkLaunch(target: MutableState<Long>, label: MutableState<String>) {
-    label.value = "Executing async..."
-
-   coroutineScope {
-        launch {
-            var cycles = 0
-            var accumulator = 0L
-            for (i in 1..100) {
-                accumulator = 0L
-                for (j in 1..100000000) {
-                    accumulator++
-                }
-            }
-            target.value += accumulator
-            label.value = "Execute async"
-        }
-    }
-
+@Composable
+@Preview(showSystemUi = true)
+fun mainScreenPreview() {
+    mainScreen()
 }
+
+
 
