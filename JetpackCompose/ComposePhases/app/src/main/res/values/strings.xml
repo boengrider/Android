@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ComposePhases</string>
+    <string name="greetings">Hello</string>
+    <string name="magentaSquare">This is a magenta square</string>
 </resources>

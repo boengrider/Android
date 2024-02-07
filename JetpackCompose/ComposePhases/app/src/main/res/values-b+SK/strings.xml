@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ComposePhases</string>
+    <string name="greetings">Vitaj</string>
+    <string name="magentaSquare">Toto je magenta stvorec</string>
+</resources>

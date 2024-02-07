@@ -1,5 +1,6 @@
 package com.example.composephases
 
+import android.content.Context
 import android.graphics.Paint
 import android.os.Bundle
 import android.util.Log
@@ -21,12 +22,16 @@ import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.BitmapPainter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.modifier.modifierLocalConsumer
@@ -34,7 +39,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.Role.Companion.Image
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.composephases.ui.theme.ComposePhasesTheme
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,30 +68,44 @@ class MainActivity : ComponentActivity() {
              * Use contentWrap or requiredSize to center node
              */
             // CenterNode()
+            // GrowAndroid()
+            // AnimateAndroid()
+            // DisplayNameDoesNotSurviveConfigChange()
+            // DisplayNameDoesSurviveConfigChange()
+            // HelloAndroid()
+            // Factorial()
+            var pickerColor = remember { mutableStateOf(Color.Red) }
+
+            Column {
+                Log.i("COMPOSE","Column()")
+                ColorPicker(color = pickerColor, Color.Red, Color.Green, Color.Blue)
+                Text("Your color", color = pickerColor.value, modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = 30.sp)
+            }
 
 
+            /**
+            var showAndroid: MutableState<Boolean> = remember { mutableStateOf(false) }
 
-            GrowAndroid()
+            Column {
+                Button(onClick = { showAndroid.value = !showAndroid.value }) {
+                    Text("Toggle android")
+                }
 
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    if (showAndroid.value) {
+                        Log.i("COMPOSE", "Calling Image() composable function")
+                        Image(
+                            painter = painterResource(id = R.drawable.pngwing_com),
+                            contentDescription = null, modifier = Modifier.background(Color.Red)
+                        )
+                    }
+                }
+            }
+            **/
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    ComposePhasesTheme {
-        Greeting("Android")
-    }
-}
 
 @Composable
 fun CenterNode() {
@@ -96,8 +120,6 @@ fun CenterNode() {
     }
 }
 
-
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun CenterNodePreview() {
@@ -109,7 +131,9 @@ fun GrowAndroid() {
     Log.i("COMPOSE","GrowAndroid()")
 
     //Hoist the state (nodeSize) in the highest common ancestor ?
-    Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.background(Color.Cyan).fillMaxSize()) {
+    Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
+        .background(Color.Cyan)
+        .fillMaxSize()) {
         val nodeSize = remember { mutableStateOf(100.dp) } // State
 
         Log.i("COMPOSE","GrowAndroid() -> Column()")
@@ -136,4 +160,57 @@ fun GrowAndroid() {
 @Preview(showSystemUi = true, showBackground = true)
 fun GrowAndroidPreview() {
     GrowAndroid()
+}
+
+
+@Composable
+fun AnimateAndroid() {
+    Log.i("COMPOSE","AnimateAndroid()")
+    val nodeSize = remember { mutableStateOf(100.dp) } // State
+    
+    Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier
+        .background(Color.Cyan)
+        .fillMaxSize()) {
+
+
+        Log.i("COMPOSE","GrowAndroid() -> Column()")
+        Image(
+            painter = painterResource(id = R.drawable.pngwing_com), contentDescription = null,
+            modifier = Modifier.size(nodeSize.value)
+        ) }
+
+    Button(onClick = { GlobalScope.launch {
+        while(nodeSize.value < 300.dp) {
+            nodeSize.value = nodeSize.value + 3.dp
+            delay(20) }
+        nodeSize.value = 100.dp
+    }
+
+    }) {
+        Log.i("COMPOSE","AnimateAndroid() -> Column() -> [Start]Button()")
+        Text("Start animation")
+    }
+}
+
+@Composable
+@Preview(showBackground = true, showSystemUi = true)
+fun AnimateAndroidPreview() {
+    AnimateAndroid()
+}
+
+@Composable
+fun Test() {
+
+    Column(modifier = Modifier
+        .fillMaxSize()
+        .background(Color.Blue)) {
+
+    }
+
+}
+
+@Composable
+@Preview(showSystemUi = true, showBackground = true)
+fun TestPreview() {
+    Test()
 }
