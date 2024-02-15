@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Android UI Development with Jetpack Compose 2nd</string>
+    <string name="cbRed">Red</string>
+    <string name="cbGreen">Green</string>
+    <string name="cbBlue">Blue</string>
+    <string name="txtRed">This is a red rectangle</string>
+    <string name="txtGreen">This is a green rectangle</string>
+    <string name="txtBlue">This is a blue rectangle</string>
+
+</resources>
