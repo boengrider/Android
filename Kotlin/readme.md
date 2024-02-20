@@ -170,6 +170,8 @@ fun decideActionFunctionTypeOrNullResultOrNull(action: String): ((Int) -> Int?)?
 }
 ```
 
-+ ## Interfaces and class inheritance
+---
+## Interfaces and class inheritance
+---
     
 
