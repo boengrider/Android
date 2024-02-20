@@ -169,5 +169,7 @@ fun decideActionFunctionTypeOrNullResultOrNull(action: String): ((Int) -> Int?)?
   return null // No such action exists
 }
 ```
+
++ ## Interfaces and class inheritance
     
 
