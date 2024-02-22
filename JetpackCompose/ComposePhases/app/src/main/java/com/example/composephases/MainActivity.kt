@@ -74,6 +74,9 @@ class MainActivity : ComponentActivity() {
             // DisplayNameDoesSurviveConfigChange()
             // HelloAndroid()
             // Factorial()
+            StateReader()
+
+            /**
             var pickerColor = remember { mutableStateOf(Color.Red) }
 
             Column {
@@ -81,6 +84,7 @@ class MainActivity : ComponentActivity() {
                 ColorPicker(color = pickerColor, Color.Red, Color.Green, Color.Blue)
                 Text("Your color", color = pickerColor.value, modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = 30.sp)
             }
+            **/
 
 
             /**

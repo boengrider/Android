@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 @Composable
 @Preview
 fun App() {
-    
+
     var radioEnabled = remember { mutableStateOf(true) }
 
     CardWithRadio(enabled = radioEnabled)
