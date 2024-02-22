@@ -1,6 +1,8 @@
 package com.example.basicscodelab
 
 import android.content.SharedPreferences
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -31,12 +33,27 @@ import androidx.compose.ui.unit.sp
 import com.example.basicscodelab.ui.theme.BasicsCodelabTheme
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateSizeAsState
+import androidx.compose.animation.core.snap
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ExpandLess
+import androidx.compose.material.icons.filled.ExpandMore
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 
 
 class MainActivity : ComponentActivity() {
@@ -49,8 +66,9 @@ class MainActivity : ComponentActivity() {
         setContent {
             BasicsCodelabTheme {
 
-                   //MyApp(modifier = Modifier.fillMaxSize())
-                     AnimateAndroid()
+                   MyApp(modifier = Modifier.fillMaxSize())
+                   //AnimateAndroid()
+                   //AnimateAndroidA()
                    //TrackGlobalStateWithoutRemember()
 
             }
@@ -87,8 +105,16 @@ fun MyApp(modifier: Modifier = Modifier) {
 
 
 @Composable
-@Preview
-fun MyAppPreview() {
+@Preview(uiMode = UI_MODE_NIGHT_YES, name = "[Dark Mode]")
+fun MyAppPreviewDarkMode() {
+    BasicsCodelabTheme {
+        MyApp(Modifier.fillMaxSize())
+    }
+}
+
+@Composable
+@Preview(name = "[Light Mode]")
+fun MyAppPreviewLightMode() {
     BasicsCodelabTheme {
         MyApp(Modifier.fillMaxSize())
     }
@@ -101,7 +127,7 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
     val extraPadding by animateDpAsState(
         targetValue = if(expanded.value) 48.dp else 0.dp,
         label = "Animate expanded",
-        animationSpec = spring(dampingRatio = Spring.DampingRatioLowBouncy, stiffness = Spring.StiffnessLow)
+        animationSpec = spring(dampingRatio = Spring.DampingRatioMediumBouncy, stiffness = Spring.StiffnessMedium)
     )
 
     Surface(
@@ -116,14 +142,17 @@ fun Greeting(name: String, modifier: Modifier = Modifier) {
 
             ) {
                 Text(text = "Hello ")
-                Text(text = name)
+                Text(text = name, style = MaterialTheme.typography.headlineMedium.copy(
+                    fontWeight = FontWeight.ExtraBold))
+                if (expanded.value) {
+                    Text(text = ("Lorem ipsum color sit lazy").repeat(name.toInt() / 2))
+                }
             }
 
-            ElevatedButton(onClick = { expanded.value = !expanded.value } ) {
-                Text(if (expanded.value) stringResource(id = R.string.show_less) else stringResource(
-                    id = R.string.show_more), fontSize = 10.sp)
+            IconButton(onClick = { expanded.value = !expanded.value }) {
+                Icon(imageVector = if (expanded.value) Icons.Filled.ExpandLess else Icons.Filled.ExpandMore,
+                     contentDescription = null)
             }
-
         }
     }
 }
@@ -141,23 +170,31 @@ fun GreetingsPreview() {
 @Composable
 fun OnboardingScreen(modifier: Modifier = Modifier, onContinueClicked: () -> Unit) {
 
-    Column(
-        modifier = modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Text("Welcome to the Basics Codelab!")
-        Button(
-            modifier = Modifier.padding(vertical = 24.dp),
-            onClick =  onContinueClicked
-        ) {
-            Text("Continue")
-        }
 
-    }
+        Column(
+            modifier = modifier
+                .fillMaxSize()
+                .background(color = MaterialTheme.colorScheme.background),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Image(painter = painterResource(id = R.drawable.android), contentDescription = null,
+                  modifier = modifier.padding(bottom = 20.dp))
+            Text(stringResource(id = R.string.onBoarding),
+                                color = Color.White,
+                                style = MaterialTheme.typography.labelLarge)
+            Button(
+                modifier = Modifier.padding(vertical = 24.dp),
+                onClick = onContinueClicked,
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+            ) {
+                Text("Continue")
+            }
+
+        }
 }
 
-@Preview(showBackground = true, widthDp = 320, heightDp = 320)
+@Preview(showBackground = true, widthDp = 320, heightDp = 320, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun OnboardingPreview() {
     BasicsCodelabTheme {
@@ -168,13 +205,32 @@ fun OnboardingPreview() {
 @Composable
 fun AnimateAndroid() {
     var expanded by remember { mutableStateOf(true) }
-    val androidSize by animateDpAsState(targetValue = if(expanded) 100.dp else 10.dp, label = "Animate android")
+    val androidSize by animateDpAsState(targetValue = if(expanded) 100.dp else 10.dp,
+        label = "Animate android",
+        animationSpec = snap(5))
     Column(horizontalAlignment = Alignment.CenterHorizontally,
            verticalArrangement = Arrangement.Center,
            modifier = Modifier.fillMaxSize()) {
         Image(painter = painterResource(id = R.drawable.android),
             contentDescription = "Android",
-            modifier = Modifier.size(androidSize)
+            modifier = Modifier
+                .size(androidSize)
+                .clickable(enabled = true, onClick = { expanded = !expanded })
+        )
+    }
+}
+
+@Composable
+fun AnimateAndroidA() {
+    var expanded by remember { mutableStateOf(true) }
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier.fillMaxSize()) {
+        Image(painter = painterResource(id = R.drawable.android),
+            contentDescription = "Android",
+            modifier = Modifier
+                .size(if (expanded) 20.dp else 100.dp)
                 .clickable(enabled = true, onClick = { expanded = !expanded })
         )
     }
