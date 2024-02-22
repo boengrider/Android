@@ -43,7 +43,8 @@ class MainActivity : ComponentActivity() {
 
             //Rectangles()
             //PredefinedLayoutDemo()
-            ConstraintLayoutDemo()
+            //ConstraintLayoutDemo()
+            App()
 
         }
     }
