@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +18,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.ComposeCompilerApi
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +41,8 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.coroutineContext
 
 class MainActivity : ComponentActivity() {
+
+    private var greetings: String = "Yo"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -49,12 +53,46 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
 
+
                     mainScreen()
+
 
                 }
             }
         }
     }
+
+    fun IncrementNumber(input: Int): Int {
+      Log.i("COMPOSE","IncrementNumber() called")
+
+      return input + 1
+    }
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TextFieldDemo(
+    value: String,
+    onValueChange: (String) -> Unit
+) {
+    TextField(
+        value = value,
+        onValueChange = onValueChange,
+        placeholder = { Text("Hello")},
+        modifier = Modifier.fillMaxWidth()
+    )
+}
+
+@Composable
+@Preview
+fun TextFieldDemoPreview() {
+    val state = remember { mutableStateOf("") }
+
+    TextFieldDemo(
+        value = state.value,
+        onValueChange = { state.value = it }
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -86,7 +124,8 @@ fun mainScreen() {
             Text("Get thread context with delay")
         }
 
-        OutlinedTextField(value = factorialOfNumber.value.toString(), onValueChange = { if(it.isDigitsOnly()) factorialOfNumber.value = it }, label = { Text("Label")}, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number))
+        OutlinedTextField(value = factorialOfNumber.value.toString(), onValueChange = { if(it.isDigitsOnly()) factorialOfNumber.value = it }, label = { Text("Label")}, keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number
+        ))
 
         Row {
             Button(onClick = {

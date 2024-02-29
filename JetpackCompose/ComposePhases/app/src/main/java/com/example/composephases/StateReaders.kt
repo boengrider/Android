@@ -27,9 +27,11 @@ import androidx.compose.material3.SmallFloatingActionButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -43,11 +45,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import java.net.URL
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StateReader() {
 
+    val composableScope = rememberCoroutineScope()
+    var charCount by remember { mutableStateOf(0)}
     var selection by remember { mutableStateOf(0) }
     Column(horizontalAlignment = Alignment.CenterHorizontally,
            verticalArrangement = Arrangement.Center,
@@ -58,7 +65,8 @@ fun StateReader() {
         Text(text = selection.toString(),
              color = MaterialTheme.colorScheme.onPrimary,
              style = MaterialTheme.typography.headlineMedium,
-             modifier = Modifier.background(MaterialTheme.colorScheme.primary)
+             modifier = Modifier
+                 .background(MaterialTheme.colorScheme.primary)
                  .padding(10.dp))
 
 
@@ -73,12 +81,26 @@ fun StateReader() {
             Text(text = "2")
         }
 
+        Button(onClick = { composableScope.launch { charCount = URL("https://zive.aktuality.sk/").readBytes().size } } ) {
+            Text("Send URL request")
+        }
+
+        Text(text = charCount.toString())
+
 
 
     }
 
 }
 
+suspend fun sendHttpRequest() {
+    coroutineScope {
+        var charCount: Int
+        launch {
+            charCount = URL("https://zive.aktuality.sk/").readBytes().size
+        }
+    }
+}
 @Composable
 @Preview(showSystemUi = true)
 fun SateReaderPreview() {
