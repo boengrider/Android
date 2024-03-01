@@ -217,6 +217,14 @@ fun decideUserVipB(input: User): Boolean {
     return (input.commitCount > 200 && input.isSubscribed)
 }
 ```
+
+```
+According to isVipClassMethod(), user Jon Doe is VIP: true
+According to isVipExtensionFunction() (decideUserVipA()), user Jon Doe is VIP: true
+According to isVipExtensionFunction() (decideUserVipB()), user Jon Doe is VIP: true
+According to decision lambda, user Jon Doe is VIP: false
+```
+
 [source file](extension_functions.kt)
     
     
