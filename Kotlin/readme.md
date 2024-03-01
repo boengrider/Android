@@ -1,4 +1,4 @@
-# This folder contains simple kotlin snippets while learning the language
+# This folder contains simple kotlin snippets
 
 ---
 + ## Function types
