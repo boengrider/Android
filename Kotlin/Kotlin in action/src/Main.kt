@@ -16,10 +16,32 @@ fun main() {
         it.nickname.startsWith("J",true) && it.commitCount > 100 && it.commitCount < 200
     }}")
 
+    //Declare subscriber
+    val el = EventListener()
+
+    el.action(10)
+
+}
+
+interface Subscriber {
+    val action: (Int) -> Unit
 }
 
 
+class EventListener() : Subscriber {
+    override val action: (Int) -> Unit = { println("You have accessed event listener field $it")}
+        get() = field
 
+}
+class Monitor(valueToMonitor: Int, val action: (Int) -> Unit) {
+    var valueToMonitor: Int = valueToMonitor
+        get() = field
+        set(value) {
+            field = value
+            action(value)
+
+        }
+}
 
 class User(var commitCount: Int = 0, val nickname: String, val isSubscribed: Boolean) {
     fun isVipClassMethod(): Boolean = this.commitCount > 0 && this.isSubscribed
@@ -38,18 +60,3 @@ fun decideUserVipB(input: User): Boolean {
 }
 
 
-
-
-
-
-
-data class Person(val age: Int = 99) {
-
-}
-
-class Employee(age: Int = 99) {
-    val person: Person = Person(age)
-}
-
-open class PersonA(val age: Int = 99) {}
-class EmployeeA : PersonA() {}
