@@ -1,35 +1,47 @@
 
 fun main() {
-    val gsp = GermanShorthairedPointer("Joey")
-    val jrt = JackRussellTerrier("Milo")
-    gsp.bark()
+    val userCommitCount: Int = 201
 
-    val cha = Chihuahua("Molly")
-    cha.bark()
+    val u1: User = User(commitCount = userCommitCount, nickname = "Jon Doe", isSubscribed = true)
 
-    gsp.fetch()
+    println("According to isVipClassMethod(), user ${u1.nickname} is VIP: ${u1.isVipClassMethod()}")
 
-    val cat = Cat(height = 2.3f)
-    println(cat.height)
-    println(cat.weight)
+    println("According to isVipExtensionFunction() (decideUserVipA()), " +
+            "user ${u1.nickname} is VIP: ${u1.isVipExtensionFunction { decideUserVipA(it) }}")
 
-    println(gsp.name)
+    println("According to isVipExtensionFunction() (decideUserVipB()), " +
+            "user ${u1.nickname} is VIP: ${u1.isVipExtensionFunction { decideUserVipB(it) }}")
 
-
-    val p1 = Person()
-    val p2 = Person(10)
-    val e1 = Employee()
-    val e2 = Employee(20)
-
-    println("${p1.age}\n${p2.age}\n${e1.person.age}\n${e2.person.age}")
-
-    val pa1 = PersonA()
-
-    println(pa1.age)
-
-
+    println("According to decision lambda, user ${u1.nickname} is VIP: ${u1.isVipExtensionFunction { 
+        it.nickname.startsWith("J",true) && it.commitCount > 100 && it.commitCount < 200
+    }}")
 
 }
+
+
+
+
+class User(var commitCount: Int = 0, val nickname: String, val isSubscribed: Boolean) {
+    fun isVipClassMethod(): Boolean = this.commitCount > 0 && this.isSubscribed
+}
+
+fun User.isVipExtensionFunction(decisionFunction: (User) -> Boolean): Boolean {
+    return decisionFunction(this)
+}
+
+fun decideUserVipA(input: User): Boolean {
+    return (input.commitCount > 100 && input.isSubscribed)
+}
+
+fun decideUserVipB(input: User): Boolean {
+    return (input.commitCount > 200 && input.isSubscribed)
+}
+
+
+
+
+
+
 
 data class Person(val age: Int = 99) {
 
