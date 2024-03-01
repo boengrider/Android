@@ -172,11 +172,12 @@ fun decideActionFunctionTypeOrNullResultOrNull(action: String): ((Int) -> Int?)?
 
 ---
 + ## Classes, objects, interfaces
-+ # Interfaces & inheritance 
++ ### Interfaces & inheritance 
 [source file](interface_animal2.kt)
 
 ---
-+ ## 
++ ## Classes, objects, interfaces
++ ### Extension function
 [source file](interface_animal2.kt)
     
     
