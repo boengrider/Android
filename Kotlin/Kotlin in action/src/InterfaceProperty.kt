@@ -1,10 +1,14 @@
-fun main() {
-    val fu = FacebookUser(1203)
+import java.net.URL
 
+fun main() {
+    val fu = FacebookUser(120)
+
+
+    //On first access, call initializer function
     fu.accountId
 
-    Thread.sleep(4000)
 
+    //On subsequent access, return stored value
     println(fu.accountId)
 }
 
@@ -21,5 +25,8 @@ class FacebookUser(val accountId: Int) : User {
 
 fun FacebookUser.getFacebookUser(accountId: Int): String {
     println("Property initializer called")
-    return "Jon Doe"
+    val result: String = URL("https://zive.aktuality.sk/").readText()[10].toString()
+    println(result)
+
+    return result
 }
