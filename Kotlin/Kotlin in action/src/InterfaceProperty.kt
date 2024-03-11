@@ -21,6 +21,13 @@ fun main() {
     //Compare object equality. This method is overridden and returns true if hash value of both object IS DIFFERENT
     println("cla == clb -> ${cla == clb}")
 
+    val nameA: String = "Jon Doe"
+    val nameB: String = "Jon Doe"
+
+    //Compare references: false
+    val nameC = nameB
+    println(nameC === nameB)
+
 
 
 
@@ -75,7 +82,7 @@ class MainAdmin(override val email: String) : Admin
 class Client(val name: String, val postalCode: Int)  {
     override fun toString() = "Client(name=$name, postalCode=$postalCode)"
 
-    //Override equals method
+    //Override equals method (operator)
     override fun equals(other: Any?): Boolean = this.hashCode() == other.hashCode()
 
     //Override hashCode method
