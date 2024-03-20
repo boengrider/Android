@@ -34,7 +34,7 @@ class Delegate(private var actions: List<((String) -> Unit)>) {
 class WriteTracker<T>(val innerSet: MutableCollection<T> = ArrayList<T>()) : MutableCollection<T> by innerSet {
     var numberOfWrites: Int = 0
 
-    override fun isEmpty(): Boolean = numberOfWrites == 0
+    //override fun isEmpty(): Boolean = numberOfWrites == 0
 
 }
 
