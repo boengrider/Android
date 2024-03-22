@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">BMI</string>
+    <string name="titleLabelTv">BMI Calculator</string>
+    <string name="heightLabel">Your height in meters</string>
+    <string name="heightInputHint">Your height in meters</string>
+    <string name="weightInputHint">Your weight in kilograms</string>
+    <string name="calculateBtn">Calculate</string>
+    <string name="heightPlusBtn">+</string>
+    <string name="heightMinusBtn">-</string>
+    <string name="resultTv">Your BMI result is %.2f\n%s \n%s</string>
+    <string name="bmiUnder">You are underweight</string>
+    <string name="bmiUnderDesc">Eat more!</string>
+    <string name="bmiOk">Normal</string>
+    <string name="bmiOkDesc">You are in a good shape!</string>
+    <string name="bmiOver">Overweight</string>
+    <string name="bmiOverDesc">Workout maybe!</string>
+    <string name="bmiObese">Morbidly obese</string>
+    <string name="bmiObeseDesc">Act now or die!</string>
+</resources>
