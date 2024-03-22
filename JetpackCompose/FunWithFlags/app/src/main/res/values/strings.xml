@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Fun With Flags</string>
+    <string name="title">Quiz App!</string>
+    <string name="subtitle">Welcome</string>
+    <string name="nameLabel">Please enter your name</string>
+    <string name="nameHint">Name</string>
+    <string name="startBtn">Start!</string>
+    <string name="question">What country does this flag belong to ?</string>
+    <string name="submitBtn">SUBMIT</string>
+</resources>

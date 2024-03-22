@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ic_bg"
+    tools:context=".MainActivity">
+
+    <!-- Sets a vertical constraint guideline -->
+   <androidx.constraintlayout.widget.Guideline
+       android:id="@+id/guideline"
+       android:orientation="horizontal"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       app:layout_constraintTop_toTopOf="parent"
+       app:layout_constraintGuide_begin="100pt"/>
+
+   <androidx.constraintlayout.widget.Guideline
+       android:id="@+id/guidelineBottom"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal"
+       app:layout_constraintBottom_toBottomOf="parent"
+       app:layout_constraintGuide_end="80pt" />
+
+   <!-- Constrain the text view to the guideline -->
+   <TextView
+       android:id="@+id/tvAppName"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginBottom="30dp"
+       android:gravity="center"
+       android:text="@string/app_name"
+       android:textColor="@color/white"
+       android:textSize="25sp"
+       android:textStyle="bold"
+       app:layout_constraintTop_toBottomOf="@id/guideline"/>
+
+   <!-- Card. Stack children in Z-order. Much like Box in compose -->
+   <com.google.android.material.card.MaterialCardView
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:layout_marginStart="20dp"
+       android:layout_marginEnd="20dp"
+       android:background="@color/white"
+       android:elevation="5dp"
+       app:cardCornerRadius="8dp"
+       app:layout_constraintTop_toBottomOf="@id/tvAppName">
+
+       <!-- LinearLayout. Vertical. This is Column in compose -->
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_margin="16dp"
+           android:orientation="vertical">
+
+           <!-- Welcome TextView -->
+           <TextView
+               android:id="@+id/tvTitle"
+               android:layout_width="match_parent"
+               android:layout_height="match_parent"
+               android:gravity="center"
+               android:text="@string/subtitle"
+               android:textColor="#363A43"
+               android:textSize="30sp"
+               android:textStyle="bold" />
+
+           <!-- Name label -->
+           <TextView
+               android:id="@+id/tvDescription"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="16dp"
+               android:gravity="center"
+               android:text="@string/nameLabel"
+               android:textColor="#7A8089"
+               android:textSize="16sp" />
+
+           <!-- Outlined box -->
+           <com.google.android.material.textfield.TextInputLayout
+               android:id="@+id/nameTil"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="20dp"
+               style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+               <androidx.appcompat.widget.AppCompatEditText
+                   android:id="@+id/nameEt"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:imeOptions="actionGo"
+                   android:hint="@string/nameHint"
+                   android:inputType="textCapWords"
+                   android:textColor="#363A43"
+                   android:textColorHint="#7A8089" />
+           </com.google.android.material.textfield.TextInputLayout>
+
+           <Button
+               android:id="@+id/startBtn"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginTop="16dp"
+               android:background="@color/purple_200"
+               android:text="@string/startBtn"
+               android:textSize="18sp" />
+
+       </LinearLayout>
+
+   </com.google.android.material.card.MaterialCardView>
+
+   <Button
+       android:id="@+id/urlBtn"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Open URL"
+       android:textStyle="bold"
+       android:layout_marginStart="40dp"
+       android:layout_marginEnd="40dp"
+       app:layout_constraintTop_toBottomOf="@id/guidelineBottom" />
+
+    <Button
+        android:id="@+id/shareBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Share"
+        android:textStyle="bold"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintTop_toBottomOf="@id/urlBtn" />
+
+
+
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
