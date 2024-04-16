@@ -7,4 +7,6 @@
     <string name="startBtn">Start!</string>
     <string name="question">What country does this flag belong to ?</string>
     <string name="submitBtn">SUBMIT</string>
+    <string name="progress_Text">Progress</string>
+    <string name="score">Your score is</string>
 </resources>

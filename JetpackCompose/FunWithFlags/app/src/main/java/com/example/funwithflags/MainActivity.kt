@@ -4,7 +4,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.SyncStateContract.Constants
 import android.util.Log
 import android.widget.Toast
 import com.example.funwithflags.databinding.ActivityMainBinding
@@ -31,7 +30,7 @@ class MainActivity : AppCompatActivity() {
             val shareIntent = Intent(Intent.ACTION_SEND)
             shareIntent.type = "text/plain"
             shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Click to subscribe")
-            val appUrl = "https://www.youtube.com/channel"
+            val appUrl = "https://www.facebook.com/profile.php?id=61558088047131"
             shareIntent.putExtra(Intent.EXTRA_TEXT, appUrl)
             startActivity(Intent.createChooser(shareIntent, "Share via"))
         }
@@ -43,11 +42,10 @@ class MainActivity : AppCompatActivity() {
                     .show()
             } else {
                 val intent = Intent(this@MainActivity, QuizQuestionsActivity::class.java)
-                intent.putExtra("UserName",name.text.toString())
+                intent.putExtra(MyConstants.USER_NAME,name.text.toString())
+                startActivity(intent)
                 finish()
             }
         }
     }
-
-
 }
