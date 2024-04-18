@@ -43,6 +43,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(binding.root)
 
         //progressTv = binding.progressTv
+        progressBar = binding.progressBar
         questionTv = binding.questionTv
         flagIv = binding.flagIv
         optionOneTv = binding.optionOneTv
@@ -66,7 +67,7 @@ class QuizQuestionsActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View) {
 
-        when(view.id) {
+        when(view?.id) {
             optionOneTv?.id -> {
                 optionOneTv?.let {
                     selectedOptionView(it, 1)
