@@ -2,36 +2,10 @@ import org.omg.CORBA.Object
 import java.net.URL
 
 fun main() {
-d
-    val map = hashSetOf(Client("Jane Doe", 90301), Client("Jon Doe", 90301))
 
-    map.forEach { println(it.name) }
-
-    val cla = Client(name = "Jon Doe", postalCode = 90301)
-    val clb = Client(name = "Jon Doe", postalCode = 90301)
-
-    println("cla -> ${cla.toString()}")
-    println("clb -> ${clb.toString()}")
-
-    println("cla hash -> ${cla.hashCode()}")
-    println("clb hash -> ${clb.hashCode()}")
-
-    //Compare references
-    println("cla === clb -> ${cla === clb}")
-    //Compare object equality. This method is overridden and returns true if hash value of both object IS DIFFERENT
-    println("cla == clb -> ${cla == clb}")
-
-    val nameA: String = "Jon Doe"
-    val nameB: String = "Jon Doe"
-
-    //Compare references: false
-    val nameC = nameB
-    println(nameC === nameB)
-
-
-
-
-
+    val e1 = Employer.newEmployerFromEmail("jon.doe@email.com")
+    println(e1.firstName)
+    println(e1.lastName)
 
 }
 

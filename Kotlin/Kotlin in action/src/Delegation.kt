@@ -54,9 +54,9 @@ class CountingSet<T>(val innerSet: MutableCollection<T> = HashSet<T>()) : Mutabl
 }
 
 object Payroll {
-    val allEmployees = arrayListOf<Person>(
-        Person("Jon Doe", 32, 11, 20),
-        Person("Jane Doe", 29, 11, 3)
+    val allEmployees = arrayListOf<Employee>(
+        Employee("Jon Doe", 32, 11, 20),
+        Employee("Jane Doe", 29, 11, 3)
     )
 
     fun calculateSalary() {
@@ -72,5 +72,6 @@ object Payroll {
 
 class Person(val name: String, var age: Int, var level: Int, var years: Int)
 
+class Employee(val name: String, var age: Int, var level: Int, var years: Int)
 
 
