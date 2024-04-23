@@ -22,9 +22,9 @@ fun main() {
 
             val payload = JsonParser.parseReader(response) // Pass Reader to the parser
             val jObject = payload.asJsonObject             // Convert to JSON tree
-            println(jObject.toString())
-            val weather = jObject.get("weather").asJsonArray[0]
-            println(weather.asJsonObject.get("description"))
+
+            val weatherMessage: String = jObject.get("weather").asJsonArray.get(0).asJsonObject.get("description").toString()
+            println(weatherMessage)
         }
     } catch(e:Exception) {
         println("Excepction occured: ${e.message}")

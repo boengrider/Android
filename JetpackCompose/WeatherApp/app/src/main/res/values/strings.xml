@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WeatherApp</string>
+    <string name="reloadTw">Refresh</string>
+    <string name="weatherTw">Press refresh</string>
 </resources>

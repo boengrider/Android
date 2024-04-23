@@ -1,5 +1,6 @@
 package com.example.weatherapp
 
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +9,8 @@ import com.example.weatherapp.databinding.ActivityMainBinding
 import android.net.Network
 import android.util.JsonReader
 import android.util.Log
+import android.widget.Toast
+import com.google.gson.JsonParser
 import java.net.HttpURLConnection
 import java.net.URL
 import java.util.concurrent.Executors
@@ -20,57 +23,48 @@ class MainActivity : AppCompatActivity() {
         ActivityMainBinding.inflate(layoutInflater)
     }
 
-    private val json = "{ \"name\": \"John\", \"age\": 30 }"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
 
-        parseJson(json)
+        getWeather(binding.weatherTw)
 
+        binding.reloadTw.setOnClickListener {
+            getWeather(binding.weatherTw)
+        }
     }
-}
-
-@Serializable
-data class User(val name: String, val age: Int)
-
-fun parseJson(json: String) {
-    val user = Json.decodeFromString<User>(json)
-    Log.d("JSON", user.toString())
-}
 
 
+    private fun getWeather(weatherTw:TextView) {
+        Executors.newSingleThreadExecutor().execute {
+            val url = URL(Constants.apiEndpoint + "?lat=48.21&lon=17.40&appid=${Constants.apiKey}")
+            val httpUrlConnection: HttpURLConnection = url.openConnection() as HttpURLConnection
+            httpUrlConnection.setRequestProperty("Accept", "application/json")
+            httpUrlConnection.requestMethod = "GET"
 
-/**
-fun getWeatherForecast() {
-    Executors.newSingleThreadExecutor().execute {
-        var httpURLConnection: HttpURLConnection? = null
+            println(httpUrlConnection.responseCode)
 
-        //Try-catch-finally block
-        try {
-            var url = URL("https://api.openweathermap.org/data/2.5/weather?lat=35&lon139&appid=" +
-                    "4899f96f6d4f7d7046833b9d879f9c91")
+            try {
+                val responseCode = httpUrlConnection.responseCode
 
-            httpURLConnection = url.openConnection() as HttpURLConnection
+                if (responseCode == HttpURLConnection.HTTP_OK) {
+                    val response = httpUrlConnection.inputStream.bufferedReader()
 
-            httpURLConnection.setRequestProperty("Accept","application/json")
-            httpURLConnection.requestMethod = "GET"
-            httpURLConnection.doInput = true
-            httpURLConnection.doOutput = false
-            //Connect ?
-            httpURLConnection.connect()
+                    val payload = JsonParser.parseReader(response) // Pass Reader to the parser
+                    val jObject = payload.asJsonObject             // Convert to JSON tree
 
-            val responseCode = httpURLConnection.responseCode
-
-
-            if(responseCode == HttpURLConnection.HTTP_OK) {
-                //read json
-                val response = httpURLConnection.inputStream.bufferedReader().use { it.readText() }
-
-                //parse json
-                val json = Json.decodeFromString<Weather>(response)
+                    weatherTw.text =
+                        jObject.get("weather").asJsonArray.get(0).asJsonObject.get("description").asString
+                }
+            } catch (e: Exception) {
+                weatherTw.text = e.message.toString()
+            } finally {
+                httpUrlConnection.disconnect()
             }
+
         }
     }
 }
-        **/
+
+
