@@ -27,7 +27,7 @@
         android:layout_marginEnd="10dp"
         app:layout_constraintTop_toTopOf="@id/navigationPaneTop"
         app:layout_constraintBottom_toBottomOf="@id/navigationPaneTop"
-        app:layout_constraintEnd_toEndOf="@id/navigationPaneTop"/>
+        app:layout_constraintEnd_toEndOf="@id/navigationPaneTop" />
 
 
     <TextView
@@ -42,7 +42,32 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <LinearLayout
+        android:id="@+id/viewGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:orientation="horizontal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/windTw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Strong wind"
+            android:layout_marginRight="40dp"/>
+
+        <TextView
+            android:id="@+id/rainTw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Light rain"/>
+
+    </LinearLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
