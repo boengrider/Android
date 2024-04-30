@@ -1,6 +1,6 @@
 package com.example.imageslider
 
-data class Slide(val photo:Int)
+data class Slide(val photo:Int)S
 
 val slides = listOf(
     R.drawable.hery1,
