@@ -31,4 +31,20 @@ fun main() {
     } finally {
         httpUrlConnection.disconnect()
     }
+
+    val functionList: MutableMap<String, (Int) -> Unit> = mutableMapOf(
+        Pair("square") {
+            println(it * it)
+        }
+    )
+
+    functionList["square"]!!(2)
+
+    functionList["increment"] = {
+        println(it + 1)
+    }
+
+    functionList["increment"]!!(20)
+
+
 }

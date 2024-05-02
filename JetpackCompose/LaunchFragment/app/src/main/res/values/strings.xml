@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">LaunchFragment</string>
+    <string name="hello_blank_fragment">I\'m a fragment containing a TextView</string>
+    <string name="hideTextFragmentButton">Hide text fragment</string>
+    <string name="showTextFragmentButton">Show text fragment</string>
+    <string name="hideImageFragmentButton">Hide image fragment</string>
+    <string name="showImageFragmentButton">Show image fragment</string>
+    <string name="hideAll">Hide all</string>
+    <string name="showAll">Show all</string>
+</resources>
